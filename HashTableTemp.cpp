@@ -29,8 +29,7 @@ public:
     {
       index /= 3;
     }
-    return index;
-   
+    return index;   
   }
 
   int seekSlot(char* value)
@@ -70,11 +69,9 @@ public:
   {
     for (int index = 0; index < size; index++)
     {
-
       if (slots[index] == value) return index;
     }
-    return -1;
-    // íàõîäèò èíäåêñ ñëîòà ñî çíà÷åíèåì, èëè -1   
+    return -1;    
   }
 };
 
@@ -83,8 +80,8 @@ public:
 int test_hash(HashTable* Table)
 {
   //HashTable* Table = new HashTable(17, 3);
-  char* value = "It’s better to light a candle than curse the darkness";
-  char* val_2 = "You can’t make bricks without straw";
+  char* value = "Itâ€™s better to light a candle than curse the darkness";
+  char* val_2 = "You canâ€™t make bricks without straw";
   int step = Table->step;
   int test = 0;
 
@@ -105,6 +102,5 @@ int test_hash(HashTable* Table)
   if (Table->put(val_2) != index) test++;
   if (Table->find(val_2) != index) test++;
   if (Table->put(val_2) != -1) test++;    //the table is full
-
   return test;
 }
