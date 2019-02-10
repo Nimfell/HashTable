@@ -30,7 +30,6 @@ public:
       index /= 3;
     }
     return index;
-
   }
 
   int seekSlot(char* value)
@@ -71,8 +70,8 @@ public:
   {
     for (int index = 0; index < size; index++)
     {
-
-      if (slots[index] == value) return index;
+      if (slots[index] == value) 
+          return index;   
     }
     return -1;   
   }
