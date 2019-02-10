@@ -78,7 +78,7 @@ public:
     return -1;   
   }
 };
-
+/*
 //====================== TEST ========================
 
 int test_hash(HashTable* Table)
@@ -109,3 +109,4 @@ int test_hash(HashTable* Table)
 
   return test;
 }
+*/
