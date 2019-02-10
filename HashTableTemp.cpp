@@ -58,10 +58,11 @@ public:
     }
     return -1;
   }
-
+  
   int put(char* value)
-  {
+  {    
     int index = seekSlot(value);
+    if (index == -1) return index;
     slots[index] = value;
     return index;
   }
