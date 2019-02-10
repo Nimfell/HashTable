@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-
 class HashTable
 {
 public:
