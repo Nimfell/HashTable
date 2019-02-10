@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+
 class HashTable
 {
 public:
@@ -9,9 +10,9 @@ public:
 
   HashTable(int sz, int stp)
   {
-    size = sz;  
-    step = stp; 
-    slots = new char*[size]; 
+    size = sz;
+    step = stp;
+    slots = new char*[size];
     for (int i = 0; i<size; i++) slots[i] = NULL;
   }
 
@@ -29,11 +30,12 @@ public:
     {
       index /= 3;
     }
-    return index;   
+    return index;
+
   }
 
   int seekSlot(char* value)
-  {   
+  {
     int index = hashFun(value);
     for (int i = 0; i < 3; i++)
     {
@@ -41,7 +43,7 @@ public:
       {
         if (slots[index] == NULL)
         {
-          slots[index] = value;
+          //slots[index] = value;
           return index;
         }
         index += step;
@@ -52,7 +54,7 @@ public:
     {
       if (slots[i] == NULL)
       {
-        slots[i] = value;
+       // slots[i] = value;
         return i;
       }
     }
@@ -62,6 +64,7 @@ public:
   int put(char* value)
   {
     int index = seekSlot(value);
+    slots[index] = value;
     return index;
   }
 
@@ -69,9 +72,10 @@ public:
   {
     for (int index = 0; index < size; index++)
     {
+
       if (slots[index] == value) return index;
     }
-    return -1;    
+    return -1;   
   }
 };
 
@@ -87,9 +91,9 @@ int test_hash(HashTable* Table)
 
   // FIND
   if (Table->find(NULL) != 0) test++;     // checking the filling of the empty table
- // if (Table->find(0) != -1) test++;       // this value is not in the table - don't work
+                                          // if (Table->find(0) != -1) test++;       // this value is not in the table - don't work
 
-  // PUT
+                                          // PUT
   int index = Table->hashFun(value);        // index = 6
   for (int i = 0; i < Table->size - 1; i++) // fill the entire array except for one cell
   {
@@ -102,5 +106,6 @@ int test_hash(HashTable* Table)
   if (Table->put(val_2) != index) test++;
   if (Table->find(val_2) != index) test++;
   if (Table->put(val_2) != -1) test++;    //the table is full
+
   return test;
 }
