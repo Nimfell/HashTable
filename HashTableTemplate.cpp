@@ -17,7 +17,9 @@ public:
 
   int hashFun(char* value)
   {    
-    int index = 0;
+    if (value == NULL)
+		return -1;
+	int index = 0;	 
     index = (int)value[0];
     for (int i = 1; value[i] != 0; i++)          // adder of sumbols
     {
@@ -81,9 +83,15 @@ public:
   }
 
   int find(char* value)
-  {    
-	for (int index = 0; index < size; index++) // table
+  { 
+	int index = hashFun(value);
+	if (index == -1) 
+		return -1;
+    for (int i = 0; i < 3; i++)
     {
+      while (index <= size - 1)
+      {
+
 		if (slots[index] != NULL)
 		{				
 			for (int i = 0; i < 128; i++) //  
@@ -91,22 +99,34 @@ public:
 				char slot = *( slots[index]+i );
 				char val  = *( value+i );
 				
-				if ( slot == val && val == 0 ) 
+				if ( slot == val && val == '\0') 
 					return index;				
 
-				if ( slot != val || val == 0)				
+				if ( slot != val || val == '\0')				
 						break;
 			}
 		}
 		else if (value == NULL)
 				return index;
+
+        index += step;
+      }
+      index = index - size;
     }
-    return -1;   
+
+    for (int i = 0; i < size; i++)
+    {
+      if (slots[i] == NULL)
+      {      
+        return i;
+      }
+    }
+    return -1;
   }
 };
-
-//====================== TEST ========================
 /*
+//====================== TEST ========================
+
 int test_hash(HashTable* Table, HashTable* Table2)
 {
   //HashTable* Table = new HashTable(17, 3);
@@ -120,7 +140,7 @@ int test_hash(HashTable* Table, HashTable* Table2)
   int test = 0;
 
   // FIND
-  if (Table->find(NULL) != 0) test++;     // checking the filling of the empty table
+  if (Table->find(NULL) != -1) test++;    // checking the filling of the empty table
                                           // if (Table->find(0) != -1) test++;       // this value is not in the table - don't work
   // PUT
   int index = Table->hashFun(value);        // index = 6
@@ -151,7 +171,9 @@ int test_hash(HashTable* Table, HashTable* Table2)
   }
   if (Table2->put("en") != -1) test++;    //the table is full
   if (Table2->find("en") != -1) test++;
-
+  if (Table2->find("01") != Table2->hashFun("01") ) test++;
+  if (Table2->find("02") != 1 ) test++;
+  if (Table2->find("03") != 11 ) test++;
   return test;
 }
 
@@ -159,7 +181,8 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	HashTable* Table = new HashTable(17, 3);
 	HashTable* Table2 = new HashTable(12, 3);
-	test_hash(Table, Table2);	
+	test_hash(Table, Table2);
+	//test_hash(Table2);
 	return 0;
 	delete Table;
 	delete Table2;
