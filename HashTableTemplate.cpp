@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include < string.h > 
 
 class HashTable
 {
@@ -21,7 +22,7 @@ public:
 		return -1;
 	int index = 0;	 
     index = (int)value[0];
-    for (int i = 1; value[i] != 0; i++)          // adder of sumbols
+    for (int i = 1; value[i] != 0; i++)  // adder of sumbols
     {
       index += (int)value[i];
     }
@@ -36,6 +37,7 @@ public:
   int seekSlot(char* value)
   {
     int index = hashFun(value);
+
     for (int i = 0; i < 3; i++)
     {
       while (index <= size - 1)
@@ -48,12 +50,11 @@ public:
       }
       index = index - size;
     }
-
-    for (int i = 0; i < size; i++)
+	
+    for (int i = 0; i < size; i++)		// slot by slot
     {
       if (slots[i] == NULL)
-      {
-       // slots[i] = value;
+      {      
         return i;
       }
     }
@@ -65,18 +66,9 @@ public:
     int index = seekSlot(value);
     if (index == -1) return index;
 
-	int char_lengh;
-	for (int i = 0; *( value+i ) != '\0' ; i++)  // copy string to new string 
-	{	
-		char_lengh = i+1;
-	}
-	
-	char* val = new char[char_lengh];		// 128 - string length limit 
-	for (int i = 0; i <= char_lengh; i++)	// copy string to new string 
-	{
-		*( val + i ) = *( value+i );
-		*( val + i + 1 ) = '\0';
-	}
+	int char_lengh = strlen(value); 	
+	char* val = new char[char_lengh];		
+	strcpy (val, value);
 
     slots[index] = val;
     return index;
@@ -84,58 +76,51 @@ public:
 
   int find(char* value)
   { 
-	int index = hashFun(value);
+	int index = hashFun(value);						//get index
 	if (index == -1) 
 		return -1;
-    for (int i = 0; i < 3; i++)
+
+    for (int i = 0; i < 3; i++)						// 3 times 
     {
-      while (index <= size - 1)
+      while (index <= size - 1)						// table limit
       {
-
-		if (slots[index] != NULL)
-		{				
-			for (int i = 0; i < 128; i++) //  
+		if (slots[index] != NULL)					// if slot is not empty
+		{	
+			if ( strcmp(value, slots[index]) == 0)	// compare
 			{
-				char slot = *( slots[index]+i );
-				char val  = *( value+i );
-				
-				if ( slot == val && val == '\0') 
-					return index;				
-
-				if ( slot != val || val == '\0')				
-						break;
+				return index;						// if equal
 			}
 		}
-		else if (value == NULL)
-				return index;
-
-        index += step;
+        index += step;								// go to next slot  
       }
-      index = index - size;
+      index = index - size;							// reaching limit			
     }
 
-    for (int i = 0; i < size; i++)
+    for (int index = 0; index < size; index++)		// slot by slot
     {
-      if (slots[i] == NULL)
-      {      
-        return i;
-      }
+		if (slots[index] != NULL)					// if slot is not empty
+		{	
+			if ( strcmp(value, slots[index]) == 0)	// compare
+			{
+				return index;						// if equal
+			}
+		}
     }
     return -1;
   }
 };
-/*
-//====================== TEST ========================
 
+//====================== TEST ========================
+/*
 int test_hash(HashTable* Table, HashTable* Table2)
 {
   //HashTable* Table = new HashTable(17, 3);
   char* value = "dark";
-  char* value2 = "It’s";
-  char value3[54] = "It’s better to light a candle than curse the darkness";
+  char* value2 = "ItÒs";
+  char value3[54] = "ItÒs better to light a candle than curse the darkness";
   char* value4 = "darkness";
 
-  char* val_2 = "You can’t make bricks without straw";
+  char* val_2 = "You canÒt make bricks without straw";
   int step = Table->step;
   int test = 0;
 
@@ -153,7 +138,6 @@ int test_hash(HashTable* Table, HashTable* Table2)
   index = (index <= Table->size - 1) ? index : index - Table->size;
   if (Table->put(value3) != index) test++;
   if (Table->find(value3) != index) test++;
-
  
   if (Table->put(value2) != 12) test++;
   if (Table->put(val_2) != -1) test++;
@@ -172,19 +156,17 @@ int test_hash(HashTable* Table, HashTable* Table2)
   if (Table2->put("en") != -1) test++;    //the table is full
   if (Table2->find("en") != -1) test++;
   if (Table2->find("01") != Table2->hashFun("01") ) test++;
-  if (Table2->find("02") != 1 ) test++;
-  if (Table2->find("03") != 11 ) test++;
+
   return test;
 }
 
 int _tmain(int argc, _TCHAR* argv[])
 {
 	HashTable* Table = new HashTable(17, 3);
-	HashTable* Table2 = new HashTable(12, 3);
-	test_hash(Table, Table2);
-	//test_hash(Table2);
-	return 0;
+	HashTable* Table2 = new HashTable(11, 5);
+	test_hash(Table, Table2);	
 	delete Table;
 	delete Table2;
-}
-*/
+	return 0;
+}*/
+
